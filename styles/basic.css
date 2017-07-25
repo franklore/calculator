@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100%;
+}
+
+#panel {
+    position: relative;
+    top: 25%;
+    width: 50%;
+    height: 50%;
+    margin: auto;
+    display: grid;
+    grid-gap: 2%;
+}
+
+#screen {
+    grid-row: 1;
+    grid-column: 1/5;
+    text-align: right;
+    font-size: 200%;
+}
+
+button {
+    font-size: 150%;
+}
+
+#CE,
+#C,
+#erase,
+#divide {
+    grid-row: 2;
+}
+
+#num7,
+#num8,
+#num9,
+#multiply {
+    grid-row: 3;
+}
+
+#num4,
+#num5,
+#num6,
+#minus {
+    grid-row: 4;
+}
+
+#num1,
+#num2,
+#num3,
+#plus {
+    grid-row: 5;
+}
+
+#plusminus,
+#num0,
+#point,
+#equal {
+    grid-row: 6;
+}
+
+#CE,
+#num7,
+#num4,
+#num1,
+#plusminus {
+    grid-column: 1;
+}
+
+#C,
+#num8,
+#num5,
+#num2,
+#num0 {
+    grid-column: 2;
+}
+
+#erase,
+#num9,
+#num6,
+#num3,
+#point {
+    grid-column: 3;
+}
+
+#divide,
+#multiply,
+#minux,
+#plus,
+#equal {
+    grid-column: 4;
+}
