@@ -1,38 +1,28 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 
 <head>
     <meta charset="utf-8">
     <title>Calculator</title>
-    <link href="styles/basic.css" rel="stylesheet" type="text/css">
+    <link href="styles/index.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
-    <div id="panel">
-        <p id="screen">0</p>
-        <button type="button" id="num0">0</button>
-        <button type="button" id="num1">1</button>
-        <button type="button" id="num2">2</button>
-        <button type="button" id="num3">3</button>
-        <button type="button" id="num4">4</button>
-        <button type="button" id="num5">5</button>
-        <button type="button" id="num6">6</button>
-        <button type="button" id="num7">7</button>
-        <button type="button" id="num8">8</button>
-        <button type="button" id="num9">9</button>
-        <button type="button" id="point">.</button>
-
-        <button type="button" id="plusminus">&plusmn;</button>
-        <button type="button" id="divide">&divide;</button>
-        <button type="button" id="multiply">&times;</button>
-        <button type="button" id="minus">&minus;</button>
-        <button type="button" id="plus">&#x2b;</button>
-        <button type="button" id="equal">&#x3d;</button>
-
-        <button type="button" id="CE">CE</button>
-        <button type="button" id="C">C</button>
-        <button type="button" id="erase">&#x232b;</button>
-    </div>
+    <aside>
+        <div id="leftbar">
+            <p>+</p>
+        </div>
+        <div id="menu">
+            <ul>
+                <li id="welcome">Welcome</li>
+                <li id="basic">Basic</li>
+            </ul>
+        </div>
+    </aside>
+    <main>
+        <iframe src="welcome.html"></iframe>
+    </main>
 </body>
+<script src="scripts/menu.js"></script>
 
 </html>

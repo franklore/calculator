@@ -1,18 +1,5 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
+@import url("init.css");
 body {
-    height: 100%;
-}
-
-#panel {
-    position: relative;
-    top: 25%;
-    width: 50%;
-    height: 50%;
-    margin: auto;
     display: grid;
     grid-gap: 2%;
 }
