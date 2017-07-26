@@ -11,8 +11,13 @@ body {
 }
 
 #input {
-    height: 100%;
-    font-size: 800%;
+    height: 35%;
+    font-size: 300%;
+}
+
+#output {
+    height: 65%;
+    font-size: 600%;
 }
 
 button {
@@ -21,6 +26,12 @@ button {
     border: 1;
     border-color: #ccc;
     box-shadow: 0;
+}
+
+#gender {
+    font-size: 150%;
+    grid-row: 2;
+    grid-column: 1/4;
 }
 
 #father,
@@ -47,37 +58,37 @@ button {
 
 #father,
 #mother {
-    grid-row: 2;
+    grid-row: 3;
 }
 
 #husband,
 #wife {
-    grid-row: 3;
+    grid-row: 4;
 }
 
 #elder_brother,
 #younger_brother {
-    grid-row: 4;
+    grid-row: 5;
 }
 
 #elder_sister,
 #younger_sister {
-    grid-row: 5;
+    grid-row: 6;
 }
 
 #son,
 #daughter {
-    grid-row: 6;
+    grid-row: 7;
 }
 
 #C {
-    grid-row: 2;
+    grid-row: 3;
 }
 
 #erase {
-    grid-row: 3/5;
+    grid-row: 4/6;
 }
 
 #equal {
-    grid-row: 5/7;
+    grid-row: 6/8;
 }
