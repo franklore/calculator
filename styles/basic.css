@@ -8,7 +8,16 @@ body {
     grid-row: 1;
     grid-column: 1/5;
     text-align: right;
-    font-size: 200%;
+}
+
+#past-input {
+    height: 30%;
+    font-size: 300%;
+}
+
+#current-input {
+    height: 80%;
+    font-size: 800%;
 }
 
 button {
