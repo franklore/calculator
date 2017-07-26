@@ -13,6 +13,10 @@ body {
 
 button {
     font-size: 150%;
+    background-color: #eee;
+    border: 1;
+    border-color: #ccc;
+    box-shadow: 0;
 }
 
 #CE,
