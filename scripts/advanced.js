@@ -123,9 +123,15 @@ for (let k of btn) {
 		break;
 		case "equal":
 		k.onclick = () => {
-			currentToPast();
-			past.textContent = eval(past.textContent);
-			current.textContent = past.textContent;
+			if (sta.brBalance !== 0) {
+				past.textContent = '';
+				current.textContent = 'error';
+			}
+			else {
+				currentToPast();
+				past.textContent = eval(past.textContent);
+				current.textContent = past.textContent;
+			}
 			sta.equaled = true;
 		};
 		break;
