@@ -72,7 +72,8 @@ for (let k of btn) {
         case 'equal':
             k.onclick = () => {
                 currentToPast();
-                past.textContent = current.textContent = eval(past.textContent);
+                current.textContent = eval(past.textContent);
+                past.textContent = '';
             }
             break;
         case 'CE':
