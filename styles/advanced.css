@@ -11,7 +11,7 @@
 
 #screen {
     grid-row: 1;
-    grid-column: 1/5;
+    grid-column: 1/7;
     text-align: right;
 }
 
@@ -28,35 +28,45 @@
 #CE,
 #C,
 #erase,
-#divide {
+#divide,
+#sin,
+#pow {
     grid-row: 2;
 }
 
 #num7,
 #num8,
 #num9,
-#multiply {
+#multiply,
+#cos,
+#fact {
     grid-row: 3;
 }
 
 #num4,
 #num5,
 #num6,
-#minus {
+#minus,
+#tan,
+#sqrt {
     grid-row: 4;
 }
 
 #num1,
 #num2,
 #num3,
-#plus {
+#plus,
+#log,
+#sq {
     grid-row: 5;
 }
 
 #plusminus,
 #num0,
 #point,
-#equal {
+#equal,
+#exp,
+#xxx {
     grid-row: 6;
 }
 
@@ -84,12 +94,28 @@
     grid-column: 3;
 }
 
+#sin,
+#cos,
+#tan,
+#log,
+#exp {
+    grid-column: 4;
+}
+
+#pow,
+#fact,
+#sqrt,
+#sq,
+#xxx {
+    grid-column: 5;
+}
+
 #divide,
 #multiply,
 #minux,
 #plus,
 #equal {
-    grid-column: 4;
+    grid-column: 6;
 }
 
 div.num {

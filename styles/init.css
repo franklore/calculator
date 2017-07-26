@@ -8,3 +8,20 @@ body {
     height: 100%;
     width: 100%;
 }
+
+div.button {
+    line-height: 2em;
+    min-height: 2em;
+    min-width: 2em;
+    margin: 5px;
+    font-size: 150%;
+    background-color: #ddd;
+    text-align: center;
+    border-radius: 5px;
+    cursor: default;
+    user-select: none;
+}
+div.button:hover {
+    background-color: purple;
+    transition: background-color 0.2s;
+}
