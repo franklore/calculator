@@ -1,0 +1,83 @@
+@import url("init.css");
+body {
+    display: grid;
+    grid-gap: 2%;
+}
+
+#screen {
+    grid-row: 1;
+    grid-column: 1/4;
+    text-align: right;
+}
+
+#input {
+    height: 100%;
+    font-size: 800%;
+}
+
+button {
+    font-size: 150%;
+    background-color: #eee;
+    border: 1;
+    border-color: #ccc;
+    box-shadow: 0;
+}
+
+#father,
+#husband,
+#elder_brother,
+#elder_sister,
+#son {
+    grid-column: 1;
+}
+
+#mother,
+#wife,
+#younger_brother,
+#younger_sister,
+#daughter {
+    grid-column: 2;
+}
+
+#C,
+#erase,
+#equal {
+    grid-column: 3;
+}
+
+#father,
+#mother {
+    grid-row: 2;
+}
+
+#husband,
+#wife {
+    grid-row: 3;
+}
+
+#elder_brother,
+#younger_brother {
+    grid-row: 4;
+}
+
+#elder_sister,
+#younger_sister {
+    grid-row: 5;
+}
+
+#son,
+#daughter {
+    grid-row: 6;
+}
+
+#C {
+    grid-row: 2;
+}
+
+#erase {
+    grid-row: 3/5;
+}
+
+#equal {
+    grid-row: 5/7;
+}
