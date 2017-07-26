@@ -23,7 +23,8 @@ aside div {
 }
 
 #leftbar #button:hover {
-    background: purple;
+    transition: background-color 0.2s;
+    background-color: purple;
     cursor: pointer;
 }
 
@@ -46,7 +47,8 @@ aside div {
     right: 100%;
     min-width: 200px;
     transition: transform 1s;
-    background: #ccc;
+    background: #bbb;
+    box-shadow: 5px 0px 5px 0px #999;
 }
 
 li {

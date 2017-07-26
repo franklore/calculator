@@ -1,7 +1,12 @@
 @import url("init.css");
-body {
+#main {
+    padding: 0 1em;
+    height: 100%;
+    min-height: 30em;
+    max-width: 50em;
+    background-color: #e8e8e8;
     display: grid;
-    grid-gap: 2%;
+    grid-template-rows: 35% 13% 13% 13% 13% 13%;
 }
 
 #screen {
@@ -11,21 +16,29 @@ body {
 }
 
 #past-input {
-    height: 30%;
+    height: 35%;
     font-size: 300%;
 }
 
 #current-input {
-    height: 80%;
-    font-size: 800%;
+    height: 65%;
+    font-size: 600%;
 }
 
-button {
+div.button {
+    line-height: 2em;
+    min-height: 2em;
+    min-width: 2em;
+    margin: 5px;
     font-size: 150%;
-    background-color: #eee;
-    border: 1;
-    border-color: #ccc;
-    box-shadow: 0;
+    background-color: #ddd;
+    text-align: center;
+    border-radius: 5px;
+    cursor: default;
+}
+div.button:hover {
+    background-color: purple;
+    transition: background-color 0.2s;
 }
 
 #CE,
@@ -93,4 +106,8 @@ button {
 #plus,
 #equal {
     grid-column: 4;
+}
+
+div.num {
+    background-color: #c8c8c8;
 }
