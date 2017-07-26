@@ -1,7 +1,7 @@
 var leftbar = document.querySelector('#leftbar');
 var menu = document.querySelector('#menu');
 
-document.querySelector('#leftbar p').onclick = () => {
+document.querySelector('#leftbar #button').onclick = () => {
     if (menu.style.transform) {
         menu.style.transform = '';
     } else {
@@ -16,3 +16,8 @@ document.querySelectorAll('#menu li').forEach((element) => {
         frame.src = element.id + '.html';
     }
 })
+
+menu.onpointerleave = function() {
+    menu.style.transform = '';
+    console.log(1);
+}
