@@ -1,0 +1,26 @@
+@import url("init.css");
+#main {
+    padding: 0 1em;
+    height: 100%;
+    display: grid;
+}
+
+#from-box,
+#to-box {
+    grid-row: 1;
+}
+
+#input-box,
+#output-box {
+    grid-row: 2;
+}
+
+#from-box,
+#input-box {
+    grid-column: 1;
+}
+
+#to-box,
+#output-box {
+    grid-column: 2;
+}
