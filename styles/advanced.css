@@ -11,7 +11,7 @@
 
 #screen {
     grid-row: 1;
-    grid-column: 1/7;
+    grid-column: 1/8;
     text-align: right;
 }
 
@@ -57,7 +57,11 @@
 #num3,
 #plus,
 #log,
-#sq {
+#leftbr,
+#left,
+#right,
+#scalex,
+#suox {
     grid-row: 5;
 }
 
@@ -66,7 +70,11 @@
 #point,
 #equal,
 #exp,
-#xxx {
+#rightbr,
+#up,
+#down,
+#scaley,
+#suoy {
     grid-row: 6;
 }
 
@@ -105,9 +113,22 @@
 #pow,
 #fact,
 #sqrt,
-#sq,
-#xxx {
+#leftbr,
+#rightbr {
     grid-column: 5;
+}
+
+#x {
+    grid-column: 6;
+    grid-row: 2/7;
+}
+
+#canv {
+    grid-row: 1/5;
+    grid-column: 8/12;
+    margin: 10px;
+    width: 100%;
+    height: 100%;
 }
 
 #divide,
@@ -115,5 +136,29 @@
 #minux,
 #plus,
 #equal {
-    grid-column: 6;
+    grid-column: 7;
+}
+
+#left,
+#up {
+    grid-column: 8;
+}
+
+#right,
+#down {
+    grid-column: 9;
+}
+
+#scalex,
+#scaley {
+    grid-column: 10;
+}
+
+#suox,
+#suoy {
+    grid-column: 11;
+}
+
+div.num {
+    background-color: #c8c8c8;
 }
