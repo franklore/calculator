@@ -275,9 +275,9 @@ function offspringElder(offspring, str) {
 }
 
 function offspringYounger(offspring, str) {
-    if (data[offspring][str] && data[offspring][str] == 2) {
+    if (data[offspring][str] && data[offspring][str].length == 2) {
         return data[offspring][str][1];
-    } else if (data[offspring][str] && data[offspring][str] == 1) {
+    } else if (data[offspring][str] && data[offspring][str].length == 1) {
         return data[offspring][str][0];
     } else {
         return offspring;
@@ -468,7 +468,12 @@ btns.forEach((element) => {
                                 setCurrent(current, element.id);
                             },
                             () => {
-                                alert(offspringSibilings(sibiling, 'brother', true));
+                                var brothers = offspringSibilings(sibiling, 'brother', true);
+                                if (brothers.length === 1) {
+                                    setCurrent(brothers[0], element.id);
+                                } else {
+                                    alert(brothers);
+                                }
                             }, );
                     } else {
                         compareRelation(sibiling, 'sister',
@@ -510,7 +515,12 @@ btns.forEach((element) => {
                                 setCurrent(current, element.id);
                             },
                             () => {
-                                alert(offspringSibilings(sibiling, 'sister', true));
+                                var sisters = offspringSibilings(sibiling, 'sister', true);
+                                if (sisters.length === 1) {
+                                    setCurrent(sisters[0], element.id);
+                                } else {
+                                    alert(sisters);
+                                }
                             }, );
                     } else {
                         compareRelation(sibiling, 'brother',

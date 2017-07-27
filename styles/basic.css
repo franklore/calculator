@@ -91,3 +91,8 @@
 #equal {
     grid-column: 4;
 }
+
+#history {
+    grid-row: 1/7;
+    grid-column: 5;
+}
