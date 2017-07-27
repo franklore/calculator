@@ -1,4 +1,4 @@
-var btn = document.querySelectorAll(".button");
+var btn = document.querySelectorAll("button");
 var past = document.querySelector("#past-input");
 var current = document.querySelector("#current-input");
 var sta = {
