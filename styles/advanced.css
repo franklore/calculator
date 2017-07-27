@@ -60,7 +60,8 @@
 #leftbr,
 #left,
 #right,
-#scalex {
+#scalex,
+#suox {
     grid-row: 5;
 }
 
@@ -72,7 +73,8 @@
 #rightbr,
 #up,
 #down,
-#scaley {
+#scaley,
+#suoy {
     grid-row: 6;
 }
 
@@ -123,15 +125,11 @@
 
 #canv {
     grid-row: 1/5;
-    grid-column: 8/11;
+    grid-column: 8/12;
     margin: 10px;
     width: 100%;
     height: 100%;
 }
-
-#draw {
-}
-
 
 #divide,
 #multiply,
@@ -154,6 +152,11 @@
 #scalex,
 #scaley {
     grid-column: 10;
+}
+
+#suox,
+#suoy {
+    grid-column: 11;
 }
 
 div.num {

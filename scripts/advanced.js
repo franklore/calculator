@@ -20,6 +20,10 @@ clear: function() {
 	this.functioned = false;
 	this.brBalance = 0;
 	this.toDraw = false;
+},
+clearLocal: function() {
+	this.dotted = false;
+	this.minus = false;	
 }
 };
 
@@ -34,9 +38,10 @@ var operator = {
 var img = {
 	domainLeft: -1,
 	domainRight: 1,
-	codomainLeft: -1,
-	codomainRight: 1,
+	codomainDown: -1,
+	codomainUp: 1,
 	dotNumber: 1000,
+	expr: '',
 }
 
 sin = Math.sin;
@@ -63,7 +68,7 @@ fact = function(x) {
 
 function currentToPast() {
 if (sta.equaled) {
-	sta.clear();
+	sta.clearLocal();
 	current.textContent = 0;
 } else if (current.textContent[0] === "-") {
 	past.textContent += "(" + current.textContent + ")";
@@ -74,13 +79,25 @@ current.textContent = 0;
 }
 
 function draw(canvas, expr) {
+	img.expr = expr;
 	canvas.clearRect(0, 0, c.width, c.height);
-	canvas.fillStyle = 'black';
-	for (let x = img.domainLeft; x <= img.domainRight; x+=(img.domainRight - img.domainLeft) / img.dotNumber) {
+
+	canvas.strokeStyle = 'black';
+	canvas.beginPath();
+	canvas.moveTo(0,c.height - c.height * (0 - img.codomainDown) / (img.codomainUp - img.codomainDown));
+	canvas.lineTo(c.width, c.height - c.height * (0 - img.codomainDown) / (img.codomainUp - img.codomainDown));
+	canvas.moveTo(-c.width * img.domainLeft / (img.domainRight - img.domainLeft), 0);
+	canvas.lineTo(-c.width * img.domainLeft / (img.domainRight - img.domainLeft), c.height);
+	canvas.stroke();
+
+	canvas.strokeStyle = 'grey';
+	canvas.beginPath();
+		for (let x = img.domainLeft; x <= img.domainRight; x+=(img.domainRight - img.domainLeft) / img.dotNumber) {
 		var xx = c.width * (x - img.domainLeft) / (img.domainRight - img.domainLeft);
-		var yy = c.height - c.height * (eval(expr) - (-1)) / (1 - -1);
-		canvas.fillRect(xx,yy,1,1);
+		var yy = c.height - c.height * (eval(expr) - img.codomainDown) / (img.codomainUp - img.codomainDown);
+		canvas.lineTo(xx,yy);
 	}
+	canvas.stroke();
 	eval(expr);
 }
 
@@ -144,7 +161,7 @@ for (let k of btn) {
 		k.onclick = () => {
 			currentToPast();
 			past.textContent += operator[k.id];
-			sta.clear();
+			sta.equaled = false;
 		};
 		break;
 		case "equal":
@@ -208,7 +225,6 @@ for (let k of btn) {
 		case 'fact':
 		k.onclick = () => {
 			if (sta.equaled) {
-				sta.clear();
 				past.textContent = '';
 			}
 			current.textContent = k.id + '(' + current.textContent + ')';
@@ -234,8 +250,57 @@ for (let k of btn) {
 
 		case 'x':
 		k.onclick = () => {
-			sta.toDraw = true;
-			current.textContent = 'x';
+			if (sta.equaled) {
+				
+			} 
+			else { 
+				sta.toDraw = true;
+				current.textContent = 'x';
+			}
+		}
+		break;
+		case 'left':
+		case 'right':
+		case 'up':
+		case 'down':
+		case 'scalex':
+		case 'scaley':
+		case 'suox':
+		case 'suoy':
+		k.onclick = () => {
+			if (k.id === 'left') {
+				img.domainLeft -= (img.domainRight - img.domainLeft) / 5;
+				img.domainRight -= (img.domainRight - img.domainLeft) / 5;
+			}
+			else if (k.id === 'right') {
+				img.domainLeft += (img.domainRight - img.domainLeft) / 5;
+				img.domainRight += (img.domainRight - img.domainLeft) / 5;
+			}
+			else if (k.id === 'down') {
+				img.codomainDown -= (img.codomainUp - img.codomainDown) / 5;
+				img.codomainUp -= (img.codomainUp - img.codomainDown) / 5;
+			}
+			else if (k.id === 'up') {
+				img.codomainDown += (img.codomainUp - img.codomainDown) / 5;
+				img.codomainUp += (img.codomainUp - img.codomainDown) / 5;
+			}
+			else if (k.id === 'scalex') {
+				img.domainLeft -= (img.domainRight - img.domainLeft) / 2;
+				img.domainRight += (img.domainRight - img.domainLeft) / 2;
+			}
+			else if (k.id === 'scaley') {
+				img.codomainDown -= (img.codomainUp - img.codomainDown) / 2;
+				img.codomainUp += (img.codomainUp - img.codomainDown) / 2;
+			}
+			else if (k.id === 'suox') {
+				img.domainLeft += (img.domainRight - img.domainLeft) / 2;
+				img.domainRight -= (img.domainRight - img.domainLeft) / 2;
+			}
+			else if (k.id === 'suoy') {
+				img.codomainDown += (img.codomainUp - img.codomainDown) / 2;
+				img.codomainUp -= (img.codomainUp - img.codomainDown) / 2;	
+			}
+			draw(ctx, img.expr);
 		}
 		
 	}
