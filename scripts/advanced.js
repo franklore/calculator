@@ -177,6 +177,14 @@ for (let k of btn) {
 			}
 			else {
 				currentToPast();
+				var p = document.createElement('p');
+                p.textContent = past.textContent + '=' + eval(past.textContent);
+                p.dataset.ans = eval(past.textContent);
+                p.onclick = retriveHistory;
+                historyDiv.appendChild(p);
+                if (historyDiv.childElementCount > maxHistory) {
+                    historyDiv.removeChild(historyDiv.firstElementChild);
+                }
 				past.textContent = eval(past.textContent);
 				current.textContent = past.textContent;
 			}

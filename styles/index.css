@@ -59,7 +59,7 @@ li {
     cursor: pointer;
 }
 li:hover {
-    background-color: #bbb;
+    background-color: purple;
     transition: background-color 0.2s;
 }
 
