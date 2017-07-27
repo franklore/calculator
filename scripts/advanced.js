@@ -1,18 +1,25 @@
 var btn = document.querySelectorAll(".button");
 var past = document.querySelector("#past-input");
 var current = document.querySelector("#current-input");
+var c = document.querySelector('#draw');
+var ctx = c.getContext('2d');
+var cdiv = document.querySelector('#canv');
+c.width = cdiv.clientWidth;
+c.height = cdiv.clientHeight;
 var sta = {
 dotted: false,
 minus: false,
 equaled: false,
 functioned: false,
 brBalance: 0,
+toDraw: false,
 clear: function() {
 	this.dotted = false;
 	this.minus = false;
 	this.equaled = false;
-	this.brBalance = 0;
 	this.functioned = false;
+	this.brBalance = 0;
+	this.toDraw = false;
 }
 };
 
@@ -22,6 +29,14 @@ var operator = {
 	plus: '+',
 	minus: '-',
 	pow: '**',
+}
+
+var img = {
+	domainLeft: -1,
+	domainRight: 1,
+	codomainLeft: -1,
+	codomainRight: 1,
+	dotNumber: 1000,
 }
 
 sin = Math.sin;
@@ -56,6 +71,17 @@ if (sta.equaled) {
 	past.textContent += current.textContent;
 }
 current.textContent = 0;
+}
+
+function draw(canvas, expr) {
+	canvas.clearRect(0, 0, c.width, c.height);
+	canvas.fillStyle = 'black';
+	for (let x = img.domainLeft; x <= img.domainRight; x+=(img.domainRight - img.domainLeft) / img.dotNumber) {
+		var xx = c.width * (x - img.domainLeft) / (img.domainRight - img.domainLeft);
+		var yy = c.height - c.height * (eval(expr) - (-1)) / (1 - -1);
+		canvas.fillRect(xx,yy,1,1);
+	}
+	eval(expr);
 }
 
 for (let k of btn) {
@@ -127,6 +153,11 @@ for (let k of btn) {
 				past.textContent = '';
 				current.textContent = 'error';
 			}
+			else if (sta.toDraw) {
+				currentToPast();
+				past.textContent = draw(ctx, past.textContent);
+				current.textContent = '0';
+			}
 			else {
 				currentToPast();
 				past.textContent = eval(past.textContent);
@@ -144,6 +175,7 @@ for (let k of btn) {
 		k.onclick = () => {
 			past.textContent = "";
 			current.textContent = 0;
+			sta.clear();
 		};
 		break;
 		case "erase":
@@ -187,19 +219,23 @@ for (let k of btn) {
 		case 'leftbr':
 		case 'rightbr':
 		k.onclick = () => {
-			if (sta.equaled) {
-
-			}
-			else if (k.id === 'leftbr') {
+			if (k.id === 'leftbr' && !sta.equaled) {
 				sta.brBalance += 1;
 				past.textContent += '(';
 			}
-			else if (k.id === 'rightbr') {
+			else if (k.id === 'rightbr' && sta.brBalance > 0) {
 				sta.brBalance -= 1;
 				currentToPast();
 				past.textContent += ')';
 				sta.equaled = true;
 			}
+		}
+		break;
+
+		case 'x':
+		k.onclick = () => {
+			sta.toDraw = true;
+			current.textContent = 'x';
 		}
 		
 	}
