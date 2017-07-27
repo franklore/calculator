@@ -46,161 +46,122 @@ fact = function(x) {
 
 
 
-function currentToPast() {
-if (sta.equaled) {
-	sta.clear();
-	current.textContent = 0;
-} else if (current.textContent[0] === "-") {
-	past.textContent += "(" + current.textContent + ")";
-} else {
-	past.textContent += current.textContent;
+var historyDiv = document.querySelector("#history");
+const maxHistory = 10;
+
+function retriveHistory() {
+    current.textContent = this.dataset.ans;
 }
-current.textContent = 0;
+
+function currentToPast() {
+    if (current.textContent[0] === "-") {
+        past.textContent += "(" + current.textContent + ")";
+    } else {
+        past.textContent += current.textContent;
+    }
+    current.textContent = 0;
 }
 
 for (let k of btn) {
-	switch (k.id) {
-		case "num0":
-		case "num1":
-		case "num2":
-		case "num3":
-		case "num4":
-		case "num5":
-		case "num6":
-		case "num7":
-		case "num8":
-		case "num9":
-		k.onclick = () => {
-			if (sta.equaled) {
-			current.textContent = k.id[3];
-			past.textContent = "";
-			sta.clear();
-			} else if (sta.functioned) {
-
-			} else if (current.textContent === "0") {
-			current.textContent = k.id[3];
-			} else {
-			current.textContent += k.id[3];
-			}
-		};
-		break;
-		case "point":
-		k.onclick = () => {
-			if (sta.equaled) {
-
-			} 
-			else if (!sta.dotted) {
-			current.textContent += ".";
-			sta.dotted = true;
-			}
-		};
-		break;
-		case "plusminus":
-		k.onclick = () => {
-			if (sta.equaled) {
-			sta.clear();
-			past.textContent = "";
-			}
-			if (!sta.minus) {
-			current.textContent = "-" + current.textContent;
-			sta.minus = true;
-			} else {
-			current.textContent = current.textContent.substring(1);
-			sta.minus = false;
-			}
-		};
-		break;
-		case "divide":
-		case "multiply":
-		case "minus":
-		case "plus":
-		case "pow":
-		k.onclick = () => {
-			currentToPast();
-			past.textContent += operator[k.id];
-			sta.clear();
-		};
-		break;
-		case "equal":
-		k.onclick = () => {
-			if (sta.brBalance !== 0) {
-				past.textContent = '';
-				current.textContent = 'error';
-			}
-			else {
-				currentToPast();
-				past.textContent = eval(past.textContent);
-				current.textContent = past.textContent;
-			}
-			sta.equaled = true;
-		};
-		break;
-		case "CE":
-		k.onclick = () => {
-			current.textContent = 0;
-		};
-		break;
-		case "C":
-		k.onclick = () => {
-			past.textContent = "";
-			current.textContent = 0;
-		};
-		break;
-		case "erase":
-		k.onclick = () => {
-			if (sta.equaled) {
-			} else if (
-			current.textContent === "0" &&
-			past.textContent.length >= 1
-			) {
-			past.textContent = past.textContent.substr(
-				0,
-				past.textContent.length - 1
-			);
-			} else if (current.textContent.length === 1) {
-			current.textContent = 0;
-			} else {
-			current.textContent = current.textContent.substr(
-				0,
-				current.textContent.length - 1
-			);
-			}
-		};
-		break;
-		case 'sin':
-		case 'cos':
-		case 'tan':
-		case 'exp':
-		case 'log':
-		case 'sqrt':
-		case 'fact':
-		k.onclick = () => {
-			if (sta.equaled) {
-				sta.clear();
-				past.textContent = '';
-			}
-			current.textContent = k.id + '(' + current.textContent + ')';
-			sta.functioned = true;
-		}
-		break;
-
-		case 'leftbr':
-		case 'rightbr':
-		k.onclick = () => {
-			if (sta.equaled) {
-
-			}
-			else if (k.id === 'leftbr') {
-				sta.brBalance += 1;
-				past.textContent += '(';
-			}
-			else if (k.id === 'rightbr') {
-				sta.brBalance -= 1;
-				currentToPast();
-				past.textContent += ')';
-				sta.equaled = true;
-			}
-		}
-		
-	}
+    switch (k.id) {
+        case "num0":
+        case "num1":
+        case "num2":
+        case "num3":
+        case "num4":
+        case "num5":
+        case "num6":
+        case "num7":
+        case "num8":
+        case "num9":
+            k.onclick = () => {
+                if (current.textContent === "0") {
+                    current.textContent = k.id[3];
+                } else {
+                    current.textContent += k.id[3];
+                }
+            };
+            break;
+        case "point":
+            k.onclick = () => {
+                current.textContent += ".";
+            };
+            break;
+        case "plusminus":
+            k.onclick = () => {
+                if (current.textContent[0] !== "-") {
+                    current.textContent = "-" + current.textContent;
+                } else {
+                    current.textContent = current.textContent.substring(1);
+                }
+            };
+            break;
+        case "divide":
+            k.onclick = () => {
+                currentToPast();
+                past.textContent += "/";
+            };
+            break;
+        case "multiply":
+            k.onclick = () => {
+                currentToPast();
+                past.textContent += "*";
+            };
+            break;
+        case "minus":
+            k.onclick = () => {
+                currentToPast();
+                past.textContent += "-";
+            };
+            break;
+        case "plus":
+            k.onclick = () => {
+                currentToPast();
+                past.textContent += "+";
+            };
+            break;
+        case "equal":
+            k.onclick = () => {
+                currentToPast();
+                var p = document.createElement('p');
+                p.textContent = past.textContent + '=' + eval(past.textContent);
+                p.dataset.ans = eval(past.textContent);
+                p.onclick = retriveHistory;
+                historyDiv.appendChild(p);
+                if (historyDiv.childElementCount > maxHistory) {
+                    historyDiv.removeChild(historyDiv.firstElementChild);
+                }
+                past.textContent = eval(past.textContent);
+                current.textContent = 0;
+            };
+            break;
+        case "CE":
+            k.onclick = () => {
+                current.textContent = 0;
+            };
+            break;
+        case "C":
+            k.onclick = () => {
+                past.textContent = "";
+                current.textContent = 0;
+            };
+            break;
+        case "erase":
+            k.onclick = () => {
+                if (current.textContent === "0" && past.textContent.length >= 1) {
+                    past.textContent = past.textContent.substr(
+                        0,
+                        past.textContent.length - 1
+                    );
+                } else if (current.textContent.length === 1) {
+                    current.textContent = 0;
+                } else {
+                    current.textContent = current.textContent.substr(
+                        0,
+                        current.textContent.length - 1
+                    );
+                }
+            };
+            break;
+    }
 }

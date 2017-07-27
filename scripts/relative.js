@@ -5,11 +5,15 @@ var gender = document.querySelector('#gender');
 
 var data = {
     '祖父': {
+        father: '曾祖父',
         wife: '祖母',
         offspring: '父亲',
+        sister: ['姑奶奶'],
     },
     '祖母': {
         husband: '祖父',
+        sister: ['姨奶奶'],
+        brother: ['舅爷'],
     },
 
     '姑妈': {
@@ -31,7 +35,6 @@ var data = {
         father: '姑父',
         husband: '',
     },
-
 
     '叔父': {
         father: '祖父',
@@ -65,9 +68,12 @@ var data = {
     '外祖父': {
         wife: '外祖母',
         offspring: '母亲',
+        sister: ['姑姥姥'],
     },
     '外祖母': {
         husband: '外祖父',
+        sister: ['姨姥姥'],
+        brother: ['舅姥爷'],
     },
 
     '姨妈': {
@@ -168,13 +174,34 @@ var data = {
     },
 
     '妻子': {
-        father: '外祖父',
+        father: '岳父',
         husband: '我',
+        brother: ['大舅子', '小舅子'],
+        sister: ['大姨子', '小姨子'],
     },
+
+    '岳父': {
+        wife: '岳母',
+        offspring: '妻子',
+    },
+    '岳母': {
+        husband: '岳父',
+    },
+
     '丈夫': {
-        father: '祖父',
+        father: '公公',
         wife: '我',
         offspring: '儿子',
+        brother: ['大伯子', '小叔子'],
+        sister: ['大姑子', '小姑子'],
+    },
+
+    '公公': {
+        wife: '婆婆',
+        offspring: '丈夫',
+    },
+    '婆婆': {
+        husband: '公公',
     },
 
     '儿子': {
@@ -275,9 +302,9 @@ function offspringElder(offspring, str) {
 }
 
 function offspringYounger(offspring, str) {
-    if (data[offspring][str] && data[offspring][str] == 2) {
+    if (data[offspring][str] && data[offspring][str].length == 2) {
         return data[offspring][str][1];
-    } else if (data[offspring][str] && data[offspring][str] == 1) {
+    } else if (data[offspring][str] && data[offspring][str].length == 1) {
         return data[offspring][str][0];
     } else {
         return offspring;
@@ -468,7 +495,12 @@ btns.forEach((element) => {
                                 setCurrent(current, element.id);
                             },
                             () => {
-                                alert(offspringSibilings(sibiling, 'brother', true));
+                                var brothers = offspringSibilings(sibiling, 'brother', true);
+                                if (brothers.length === 1) {
+                                    setCurrent(brothers[0], element.id);
+                                } else {
+                                    alert(brothers);
+                                }
                             }, );
                     } else {
                         compareRelation(sibiling, 'sister',
@@ -510,7 +542,12 @@ btns.forEach((element) => {
                                 setCurrent(current, element.id);
                             },
                             () => {
-                                alert(offspringSibilings(sibiling, 'sister', true));
+                                var sisters = offspringSibilings(sibiling, 'sister', true);
+                                if (sisters.length === 1) {
+                                    setCurrent(sisters[0], element.id);
+                                } else {
+                                    alert(sisters);
+                                }
                             }, );
                     } else {
                         compareRelation(sibiling, 'brother',
