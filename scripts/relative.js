@@ -1,8 +1,7 @@
 var input = document.querySelector('#input');
 var output = document.querySelector('#output');
 var btns = document.querySelectorAll('button');
-var male = document.querySelector('#male');
-var female = document.querySelector('#female');
+var gender = document.querySelector('#gender');
 
 var data = {
     '祖父': {
@@ -24,12 +23,13 @@ var data = {
 
     '表兄弟': {
         father: '姑父',
-        elder_sister: '表姐妹',
-        younger_sister: '表姐妹',
+        wife: '',
+        sister: ['表姐妹'],
     },
 
     '表姐妹': {
         father: '姑父',
+        husband: '',
     },
 
 
@@ -44,12 +44,13 @@ var data = {
 
     '堂兄弟': {
         father: '伯父',
-        elder_sister: '堂姐妹',
-        younger_sister: '堂姐妹',
+        wife: '',
+        sister: ['堂姐妹'],
     },
 
     '堂姐妹': {
         father: '伯父',
+        husband: '',
     },
 
     '伯父': {
@@ -91,18 +92,14 @@ var data = {
         father: '祖父',
         wife: '母亲',
         offspring: '我',
-        elder_brother: '伯父',
-        younger_brother: '叔父',
-        elder_sister: '姑妈',
-        younger_sister: '姑妈',
+        brother: ['伯父', '叔父'],
+        sister: ['姑妈'],
     },
     '母亲': {
         father: '外祖父',
         husband: '父亲',
-        elder_brother: '舅舅',
-        younger_brother: '舅舅',
-        elder_sister: '姨妈',
-        younger_sister: '姨妈',
+        brother: ['舅舅'],
+        sister: ['姨妈'],
     },
 
     '哥哥': {
@@ -116,14 +113,13 @@ var data = {
 
     '侄子': {
         father: '哥哥',
-        elder_brother: '侄子',
-        younger_brother: '侄子',
-        elder_sister: '侄女',
-        younger_sister: '侄女',
+        wife: '',
+        sister: ['侄女'],
     },
 
     '侄女': {
         father: '哥哥',
+        husband: '',
     },
 
     '弟弟': {
@@ -146,14 +142,13 @@ var data = {
 
     '外甥': {
         father: '姐夫',
-        elder_brother: '外甥',
-        younger_brother: '外甥',
-        elder_sister: '外甥女',
-        younger_sister: '外甥女',
+        wife: '',
+        sister: ['外甥女'],
     },
 
     '外甥女': {
         father: '姐夫',
+        husband: '',
     },
 
     '妹妹': {
@@ -168,10 +163,8 @@ var data = {
     '我': {
         father: '父亲',
         //imcomplete
-        elder_brother: '哥哥',
-        younger_brother: '弟弟',
-        elder_sister: '姐姐',
-        younger_sister: '妹妹',
+        brother: ['哥哥', '弟弟'],
+        sister: ['姐姐', '妹妹'],
     },
 
     '妻子': {
@@ -187,10 +180,7 @@ var data = {
     '儿子': {
         // imcomplete
         wife: '儿媳',
-        elder_brother: '儿子',
-        younger_brother: '儿子',
-        elder_sister: '女儿',
-        younger_sister: '女儿',
+        sister: ['女儿'],
         offspring: '孙子',
     },
     '儿媳': {
@@ -199,12 +189,13 @@ var data = {
 
     '孙子': {
         father: '儿子',
-        elder_sister: '孙女',
-        younger_sister: '孙女',
+        wife: '',
+        sister: ['孙女'],
     },
 
     '孙女': {
         father: '儿子',
+        husband: '',
     },
 
     '女儿': {
@@ -218,37 +209,34 @@ var data = {
 
     '外孙': {
         father: '女婿',
-        elder_sister: '外孙女',
-        younger_sister: '外孙女',
+        wife: '',
+        sister: ['外孙女'],
     },
 
     '外孙女': {
         father: '女婿',
+        husband: '',
     },
 }
 
-male.onclick = () => {
-    data['我'].wife = '妻子';
-    data['我'].offspring = '儿子';
-    delete data['我'].husband;
+gender.onchange = () => {
+    if (gender.value === 'male') {
+        data['我'].wife = '妻子';
+        data['我'].offspring = '儿子';
+        delete data['我'].husband;
 
-    data['儿子'].father = '我';
-    data['女儿'].father = '我';
-}
-female.onclick = () => {
-    data['我'].husband = '丈夫';
-    delete data['我'].wife;
-    delete data['我'].offspring;
+        data['儿子'].father = '我';
+        data['女儿'].father = '我';
+    } else {
+        data['我'].husband = '丈夫';
+        delete data['我'].wife;
+        delete data['我'].offspring;
 
-    data['儿子'].father = '丈夫';
-    data['女儿'].father = '丈夫';
-}
-
-if (male.checked) {
-    male.onclick();
-} else if (female.checked) {
-    female.onclick();
-}
+        data['儿子'].father = '丈夫';
+        data['女儿'].father = '丈夫';
+    }
+};
+gender.onchange();
 
 var str = {
     father: '父亲',
@@ -272,6 +260,50 @@ function setCurrent(c, param) {
     current = c;
     inputHistory.push(input.textContent);
     input.textContent += '的' + str[param];
+}
+
+function isOffspring(str) {
+    return data[str].brother || data[str].sister;
+}
+
+function offspringElder(offspring, str) {
+    if (data[offspring][str]) {
+        return data[offspring][str][0];
+    } else {
+        return offspring;
+    }
+}
+
+function offspringYounger(offspring, str) {
+    if (data[offspring][str] && data[offspring][str] == 2) {
+        return data[offspring][str][1];
+    } else if (data[offspring][str] && data[offspring][str] == 1) {
+        return data[offspring][str][0];
+    } else {
+        return offspring;
+    }
+}
+
+function offspringSibilings(offspring, str, self) {
+    if (data[offspring][str]) {
+        if (self && data[offspring][str == 'brother' ? 'wife' : 'husband']) {
+            return data[offspring][str].concat([offspring]);
+        } else {
+            return data[offspring][str];
+        }
+    } else {
+        return [offspring];
+    }
+}
+
+function compareRelation(offspring, str, f1, f2, f3) {
+    if (data[offspring][str] && data[offspring][str].length == 2 && current === data[offspring][str][0]) {
+        f1();
+    } else if (data[offspring][str] && data[offspring][str].length == 2 && current === data[offspring][str][1]) {
+        f2();
+    } else if (data[offspring][str]) {
+        f3();
+    }
 }
 
 btns.forEach((element) => {
@@ -318,17 +350,16 @@ btns.forEach((element) => {
         case 'daughter':
             element.onclick = () => {
                 let offspring = data[current].wife ? data[current].offspring : data[data[current].husband].offspring;
-                if (element.id === 'son' && data[offspring].elder_brother === data[offspring].younger_brother) {
-                    var children = [data[offspring].elder_brother];
+                if (element.id === 'son' && data[offspring].brother) {
+                    var children = data[offspring].brother.slice();
                 } else
-                if (element.id === 'daughter' && data[offspring].elder_sister === data[offspring].younger_sister) {
-                    var children = [data[offspring].elder_sister];
-                } else if (element.id === 'son') {
-                    var children = [data[offspring].elder_brother, data[offspring].younger_brother];
+                if (element.id === 'daughter' && data[offspring].sister) {
+                    var children = data[offspring].sister.slice();
                 } else {
-                    var children = [data[offspring].elder_sister, data[offspring].younger_sister];
+                    var children = [];
                 }
-                if ((element.id === 'son' && data[offspring].wife && offscreenBuffering !== data[offspring].elder_brother) || (element.id === 'daughter' && data[offspring].husband)) {
+                if ((element.id === 'son' && data[offspring].wife !== undefined) ||
+                    (element.id === 'daughter' && data[offspring].husband !== undefined)) {
                     children.push(offspring);
                 }
                 if (children.length === 1) {
@@ -339,34 +370,169 @@ btns.forEach((element) => {
             };
             break;
         case 'elder_brother':
-        case 'younger_brother':
-        case 'elder_sister':
-        case 'younger_sister':
             element.onclick = () => {
-                if (data[current][element.id]) {
-                    setCurrent(data[current][element.id], element.id);
+                if (isOffspring(current)) {
+                    setCurrent(offspringElder(current, 'brother'), element.id);
                 } else {
                     let sibiling = data[data[current].father].offspring;
-
-                    if ((current === data[sibiling].elder_brother && element.id === 'elder_brother') ||
-                        (current === data[sibiling].younger_brother && element.id === 'younger_brother') ||
-                        (current === data[sibiling].elder_sister && element.id === 'elder_sister') ||
-                        (current === data[sibiling].younger_sister && element.id === 'younger_sister')) {
-                        setCurrent(current, element.id);
-                    } else
-                    if ((current === data[sibiling].elder_brother && element.id === 'elder_sister') ||
-                        (current === data[sibiling].younger_brother && element.id === 'younger_sister') ||
-                        (current === data[sibiling].elder_sister && element.id === 'elder_brother') ||
-                        (current === data[sibiling].younger_sister && element.id === 'younger_brother')) {
-                        setCurrent(data[sibiling][element.id], str[element.id]);
-                    } else
-                    if ((current === data[sibiling].elder_brother && element.id === 'younger_brother' && data[sibiling].husband) ||
-                        (current === data[sibiling].younger_brother && element.id === 'elder_brother' && data[sibiling].husband) ||
-                        (current === data[sibiling].elder_sister && element.id === 'younger_sister' && !data[sibiling].husband) ||
-                        (current === data[sibiling].younger_sister && element.id === 'elder_sister' && !data[sibiling].husband)) {
-                        setCurrent(data[sibiling][element.id], str[element.id]);
+                    if (data[current].wife) {
+                        compareRelation(sibiling, 'brother',
+                            () => {
+                                setCurrent(current, element.id);
+                            },
+                            () => {
+                                alert(offspringSibilings(sibiling, 'brother', true));
+                            },
+                            () => {
+                                alert(offspringSibilings(sibiling, 'brother', true));
+                            }, );
                     } else {
-                        alert(sibiling + ' ' + data[sibiling][element.id]);
+                        compareRelation(sibiling, 'sister',
+                            () => {
+                                setCurrent(offspringElder(sibiling, 'brother'), element.id);
+                            },
+                            () => {
+                                let brothers = offspringSibilings(sibiling, 'brother', true);
+                                if (brothers.length === 1) {
+                                    setCurrent(brothers[0], element.id);
+                                } else {
+                                    alert(brothers);
+                                }
+                            },
+                            () => {
+                                let brothers = offspringSibilings(sibiling, 'brother', true);
+                                if (brothers.length === 1) {
+                                    setCurrent(brothers[0], element.id);
+                                } else {
+                                    alert(brothers);
+                                }
+                            }, );
+                    }
+                }
+            };
+            break;
+        case 'elder_sister':
+            element.onclick = () => {
+                if (isOffspring(current)) {
+                    setCurrent(offspringElder(current, 'sister'), element.id);
+                } else {
+                    let sibiling = data[data[current].father].offspring;
+                    if (data[current].husband) {
+                        compareRelation(sibiling, 'sister',
+                            () => {
+                                setCurrent(current, element.id);
+                            },
+                            () => {
+                                alert(offspringSibilings(sibiling, 'sister', true));
+                            },
+                            () => {
+                                alert(offspringSibilings(sibiling, 'sister', true));
+                            }, );
+                    } else {
+                        compareRelation(sibiling, 'brother',
+                            () => {
+                                setCurrent(offspringElder(sibiling, 'sister'), element.id);
+                            },
+                            () => {
+                                let sisters = offspringSibilings(sibiling, 'sister', true);
+                                if (sisters.length === 1) {
+                                    setCurrent(sisters[0], element.id);
+                                } else {
+                                    alert(sisters);
+                                }
+                            },
+                            () => {
+                                let sisters = offspringSibilings(sibiling, 'sister', true);
+                                if (sisters.length === 1) {
+                                    setCurrent(sisters[0], element.id);
+                                } else {
+                                    alert(sisters);
+                                }
+                            }, );
+                    }
+                }
+            };
+            break;
+        case 'younger_brother':
+            element.onclick = () => {
+                if (isOffspring(current)) {
+                    setCurrent(offspringYounger(current, 'brother'), element.id);
+                } else {
+                    let sibiling = data[data[current].father].offspring;
+                    if (data[current].wife) {
+                        compareRelation(sibiling, 'brother',
+                            () => {
+                                alert(offspringSibilings(sibiling, 'brother', true));
+                            },
+                            () => {
+                                setCurrent(current, element.id);
+                            },
+                            () => {
+                                alert(offspringSibilings(sibiling, 'brother', true));
+                            }, );
+                    } else {
+                        compareRelation(sibiling, 'sister',
+                            () => {
+                                let brothers = offspringSibilings(sibiling, 'brother', true);
+                                if (brothers.length === 1) {
+                                    setCurrent(brothers[0], element.id);
+                                } else {
+                                    alert(brothers);
+                                }
+                            },
+                            () => {
+                                setCurrent(offspringYounger(sibiling, 'brother'), element.id);
+                            },
+                            () => {
+                                let brothers = offspringSibilings(sibiling, 'brother', true);
+                                if (brothers.length === 1) {
+                                    setCurrent(brothers[0], element.id);
+                                } else {
+                                    alert(brothers);
+                                }
+                            }, );
+                    }
+                }
+            };
+            break;
+        case 'younger_sister':
+            element.onclick = () => {
+                if (isOffspring(current)) {
+                    setCurrent(offspringYounger(current, 'sister'), element.id);
+                } else {
+                    let sibiling = data[data[current].father].offspring;
+                    if (data[current].husband) {
+                        compareRelation(sibiling, 'sister',
+                            () => {
+                                alert(offspringSibilings(sibiling, 'sister', true));
+                            },
+                            () => {
+                                setCurrent(current, element.id);
+                            },
+                            () => {
+                                alert(offspringSibilings(sibiling, 'sister', true));
+                            }, );
+                    } else {
+                        compareRelation(sibiling, 'brother',
+                            () => {
+                                let sisters = offspringSibilings(sibiling, 'sister', true);
+                                if (sisters.length === 1) {
+                                    setCurrent(sisters[0], element.id);
+                                } else {
+                                    alert(sisters);
+                                }
+                            },
+                            () => {
+                                setCurrent(offspringYounger(sibiling, 'sister'), element.id);
+                            },
+                            () => {
+                                let sisters = offspringSibilings(sibiling, 'sister', true);
+                                if (sisters.length === 1) {
+                                    setCurrent(sisters[0], element.id);
+                                } else {
+                                    alert(sisters);
+                                }
+                            }, );
                     }
                 }
             };
