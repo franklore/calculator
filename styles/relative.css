@@ -28,12 +28,6 @@ button {
     box-shadow: 0;
 }
 
-#gender {
-    font-size: 150%;
-    grid-row: 2;
-    grid-column: 1/4;
-}
-
 #father,
 #husband,
 #elder_brother,
@@ -50,6 +44,7 @@ button {
     grid-column: 2;
 }
 
+#gender-box,
 #C,
 #erase,
 #equal {
@@ -58,27 +53,31 @@ button {
 
 #father,
 #mother {
-    grid-row: 3;
+    grid-row: 2;
 }
 
 #husband,
 #wife {
-    grid-row: 4;
+    grid-row: 3;
 }
 
 #elder_brother,
 #younger_brother {
-    grid-row: 5;
+    grid-row: 4;
 }
 
 #elder_sister,
 #younger_sister {
-    grid-row: 6;
+    grid-row: 5;
 }
 
 #son,
 #daughter {
-    grid-row: 7;
+    grid-row: 6;
+}
+
+#gender-box {
+    grid-row: 2;
 }
 
 #C {
@@ -86,9 +85,9 @@ button {
 }
 
 #erase {
-    grid-row: 4/6;
+    grid-row: 4;
 }
 
 #equal {
-    grid-row: 6/8;
+    grid-row: 5/7;
 }
