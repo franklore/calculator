@@ -22,10 +22,7 @@ var operator = {
 	point: '.',
 }
 
-var img = {
-	dotNumber: 1000,
-	expr: '',
-}
+var imgExpr = '';
 
 sin = Math.sin;
 cos = Math.cos;
@@ -57,22 +54,22 @@ function drawFunction() {
 	ctx.stroke();
 	ctx.closePath();
 
-	if (!img.expr) {
+	if (!imgExpr) {
 		return;
 	}
-	var f = (x) => eval(img.expr);
+	var f = (x) => eval(imgExpr);
 	ctx.strokeStyle = 'grey';
 	ctx.beginPath();
 	ctx.moveTo(minX.value, f(minX.value));
-	for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / img.dotNumber) {
+	for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / 1000) {
 		ctx.lineTo(x, f(x));
 	}
 	ctx.stroke();
 }
 
 function redraw() {
-	width = canvas.width;
-	height = canvas.height;
+	width = canvas.width = canvasDiv.clientWidth;
+	height = canvas.height = canvasDiv.clientHeight;
 
 	ctx.clearRect(0, 0, width, height);
 	ctx.save();
@@ -149,11 +146,20 @@ for (let k of btn) {
 			k.onclick = () => {
 				if (input.textContent.includes('x')) {
 					saveHistory(input.textContent, input.textContent);
-					img.expr = input.textContent;
+					imgExpr = input.textContent;
 					output.textContent = '';
 				} else {
-					saveHistory(input.textContent + '=' + eval(input.textContent), eval(input.textContent));
-					output.textContent = eval(input.textContent).toPrecision(4);
+					try {
+						let evalout = eval(input.textContent);
+						if (!isFinite(evalout)) {
+							throw evalout;
+						}
+						saveHistory(input.textContent + '=' + evalout, evalout);
+						output.textContent = evalout.toPrecision(4);
+					} catch (error) {
+						alert('Error');
+						input.textContent = '';
+					}
 				}
 			};
 			break;

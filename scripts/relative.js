@@ -230,6 +230,18 @@ var data = {
         husband: '',
     },
 
+    '曾孙': {
+        father: '孙子',
+        wife: '',
+        sister: ['曾孙女'],
+    },
+
+    '曾孙女': {
+        father: '孙子',
+        husband: '',
+    },
+
+
     '女儿': {
         // imcomplete
         husband: '女婿',
@@ -359,8 +371,16 @@ btns.forEach((element) => {
             break;
         case 'equal':
             element.onclick = () => {
-                output.textContent = current;
-                saveHistory(current, '')
+                if (current) {
+                    output.textContent = current;
+                    saveHistory(current, '')
+                    input.textContent = '我';
+                    inputHistory = [];
+                    current = '我';
+                    currentHistory = [];
+                } else {
+                    alert('sorry');
+                }
                 input.textContent = '我';
                 inputHistory = [];
                 current = '我';
