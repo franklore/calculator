@@ -1,31 +1,15 @@
 var btn = document.querySelectorAll("button");
-var past = document.querySelector("#past-input");
-var current = document.querySelector("#current-input");
-var c = document.querySelector('#draw');
-var ctx = c.getContext('2d');
-var cdiv = document.querySelector('#canv');
-c.width = cdiv.clientWidth;
-c.height = cdiv.clientHeight;
-var sta = {
-dotted: false,
-minus: false,
-equaled: false,
-functioned: false,
-brBalance: 0,
-toDraw: false,
-clear: function() {
-	this.dotted = false;
-	this.minus = false;
-	this.equaled = false;
-	this.functioned = false;
-	this.brBalance = 0;
-	this.toDraw = false;
-},
-clearLocal: function() {
-	this.dotted = false;
-	this.minus = false;	
-}
-};
+var input = document.querySelector("#input");
+var output = document.querySelector("#output");
+
+var canvasDiv = document.querySelector('#canvas-div');
+var canvas = document.querySelector('canvas');
+var ctx = canvas.getContext('2d');
+var minX = document.querySelector('#minX'),
+	maxX = document.querySelector('#maxX'),
+	minY = document.querySelector('#minY'),
+	maxY = document.querySelector('#maxY');
+var width, height;
 
 var operator = {
 	divide: '/',
@@ -33,13 +17,12 @@ var operator = {
 	plus: '+',
 	minus: '-',
 	pow: '**',
+	leftbr: '(',
+	rightbr: ')',
+	point: '.',
 }
 
 var img = {
-	domainLeft: -1,
-	domainRight: 1,
-	codomainDown: -1,
-	codomainUp: 1,
 	dotNumber: 1000,
 	expr: '',
 }
@@ -51,8 +34,8 @@ pow = Math.pow;
 exp = Math.exp;
 log = Math.log;
 sqrt = Math.sqrt;
-sq = (x) => x*x;
-fact = function(x) {
+sq = (x) => x * x;
+fact = function (x) {
 	if (Math.floor(x) !== x)
 		return 0;
 	if (x < 0)
@@ -64,41 +47,51 @@ fact = function(x) {
 	return s;
 }
 
+function drawFunction() {
+	ctx.strokeStyle = 'black';
+	ctx.beginPath();
+	ctx.moveTo(-width / 2, 0);
+	ctx.lineTo(width / 2, 0);
+	ctx.moveTo(0, height / 2);
+	ctx.lineTo(0, -height / 2);
+	ctx.stroke();
+	ctx.closePath();
 
-
-function currentToPast() {
-if (sta.equaled) {
-	sta.clearLocal();
-	current.textContent = 0;
-} else if (current.textContent[0] === "-") {
-	past.textContent += "(" + current.textContent + ")";
-} else {
-	past.textContent += current.textContent;
-}
-current.textContent = 0;
-}
-
-function draw(canvas, expr) {
-	img.expr = expr;
-	canvas.clearRect(0, 0, c.width, c.height);
-
-	canvas.strokeStyle = 'black';
-	canvas.beginPath();
-	canvas.moveTo(0,c.height - c.height * (0 - img.codomainDown) / (img.codomainUp - img.codomainDown));
-	canvas.lineTo(c.width, c.height - c.height * (0 - img.codomainDown) / (img.codomainUp - img.codomainDown));
-	canvas.moveTo(-c.width * img.domainLeft / (img.domainRight - img.domainLeft), 0);
-	canvas.lineTo(-c.width * img.domainLeft / (img.domainRight - img.domainLeft), c.height);
-	canvas.stroke();
-
-	canvas.strokeStyle = 'grey';
-	canvas.beginPath();
-		for (let x = img.domainLeft; x <= img.domainRight; x+=(img.domainRight - img.domainLeft) / img.dotNumber) {
-		var xx = c.width * (x - img.domainLeft) / (img.domainRight - img.domainLeft);
-		var yy = c.height - c.height * (eval(expr) - img.codomainDown) / (img.codomainUp - img.codomainDown);
-		canvas.lineTo(xx,yy);
+	if (!img.expr) {
+		return;
 	}
-	canvas.stroke();
-	eval(expr);
+	var f = (x) => eval(img.expr);
+	ctx.strokeStyle = 'grey';
+	ctx.beginPath();
+	ctx.moveTo(minX.value, f(minX.value));
+	for (let x = Number(minX.value); x < maxY.value; x += (maxX.value - minX.value) / img.dotNumber) {
+		ctx.lineTo(x, f(x));
+	}
+	ctx.stroke();
+}
+
+function redraw() {
+	width = canvas.width;
+	height = canvas.height;
+
+	ctx.clearRect(0, 0, width, height);
+	ctx.save();
+	ctx.scale(1, -1);
+	ctx.scale(width / (maxX.value - minX.value), height / (maxY.value - minY.value));
+	ctx.translate(-minX.value, -maxY.value);
+
+	ctx.lineWidth = 1 / Math.max(width / (maxX.value - minX.value), height / (maxY.value - minY.value))
+	drawFunction()
+
+	ctx.restore();
+	window.requestAnimationFrame(redraw);
+}
+redraw();
+
+var inputHistory = [''];
+
+function retriveHistory() {
+	input.textContent += this.dataset.ans;
 }
 
 for (let k of btn) {
@@ -113,117 +106,24 @@ for (let k of btn) {
 		case "num7":
 		case "num8":
 		case "num9":
-		k.onclick = () => {
-			if (sta.equaled) {
-			current.textContent = k.id[3];
-			past.textContent = "";
-			sta.clear();
-			} else if (sta.functioned) {
-
-			} else if (current.textContent === "0") {
-			current.textContent = k.id[3];
-			} else {
-			current.textContent += k.id[3];
-			}
-		};
-		break;
+			k.onclick = () => {
+				inputHistory.push(input.textContent);
+				input.textContent += k.id[3];
+			};
+			break;
 		case "point":
-		k.onclick = () => {
-			if (sta.equaled) {
-
-			} 
-			else if (!sta.dotted) {
-			current.textContent += ".";
-			sta.dotted = true;
-			}
-		};
-		break;
-		case "plusminus":
-		k.onclick = () => {
-			if (sta.equaled) {
-			sta.clear();
-			past.textContent = "";
-			}
-			if (!sta.minus) {
-			current.textContent = "-" + current.textContent;
-			sta.minus = true;
-			} else {
-			current.textContent = current.textContent.substring(1);
-			sta.minus = false;
-			}
-		};
-		break;
 		case "divide":
 		case "multiply":
 		case "minus":
 		case "plus":
 		case "pow":
-		k.onclick = () => {
-			currentToPast();
-			past.textContent += operator[k.id];
-			sta.equaled = false;
-		};
-		break;
-		case "equal":
-		k.onclick = () => {
-			if (sta.brBalance !== 0) {
-				past.textContent = '';
-				current.textContent = 'error';
-			}
-			else if (sta.toDraw) {
-				currentToPast();
-				past.textContent = draw(ctx, past.textContent);
-				current.textContent = '0';
-			}
-			else {
-				currentToPast();
-				var p = document.createElement('p');
-                p.textContent = past.textContent + '=' + eval(past.textContent);
-                p.dataset.ans = eval(past.textContent);
-                p.onclick = retriveHistory;
-                historyDiv.appendChild(p);
-                if (historyDiv.childElementCount > maxHistory) {
-                    historyDiv.removeChild(historyDiv.firstElementChild);
-                }
-				past.textContent = eval(past.textContent);
-				current.textContent = past.textContent;
-			}
-			sta.equaled = true;
-		};
-		break;
-		case "CE":
-		k.onclick = () => {
-			current.textContent = 0;
-		};
-		break;
-		case "C":
-		k.onclick = () => {
-			past.textContent = "";
-			current.textContent = 0;
-			sta.clear();
-		};
-		break;
-		case "erase":
-		k.onclick = () => {
-			if (sta.equaled) {
-			} else if (
-			current.textContent === "0" &&
-			past.textContent.length >= 1
-			) {
-			past.textContent = past.textContent.substr(
-				0,
-				past.textContent.length - 1
-			);
-			} else if (current.textContent.length === 1) {
-			current.textContent = 0;
-			} else {
-			current.textContent = current.textContent.substr(
-				0,
-				current.textContent.length - 1
-			);
-			}
-		};
-		break;
+		case 'leftbr':
+		case 'rightbr':
+			k.onclick = () => {
+				inputHistory.push(input.textContent);
+				input.textContent += operator[k.id];
+			};
+			break;
 		case 'sin':
 		case 'cos':
 		case 'tan':
@@ -231,42 +131,44 @@ for (let k of btn) {
 		case 'log':
 		case 'sqrt':
 		case 'fact':
-		k.onclick = () => {
-			if (sta.equaled) {
-				past.textContent = '';
+			k.onclick = () => {
+				inputHistory.push(input.textContent);
+				input.textContent += k.id + '(';
 			}
-			current.textContent = k.id + '(' + current.textContent + ')';
-			sta.functioned = true;
-		}
-		break;
-
-		case 'leftbr':
-		case 'rightbr':
-		k.onclick = () => {
-			if (k.id === 'leftbr' && !sta.equaled) {
-				sta.brBalance += 1;
-				past.textContent += '(';
-			}
-			else if (k.id === 'rightbr' && sta.brBalance > 0) {
-				sta.brBalance -= 1;
-				currentToPast();
-				past.textContent += ')';
-				sta.equaled = true;
-			}
-		}
-		break;
-
+			break;
 		case 'x':
-		k.onclick = () => {
-			if (sta.equaled) {
-				
-			} 
-			else { 
-				sta.toDraw = true;
-				current.textContent = 'x';
+		case 'E':
+			k.onclick = () => {
+				inputHistory.push(input.textContent);
+				input.textContent += k.id;
 			}
-		}
-		break;
+			break;
+		case "equal":
+			k.onclick = () => {
+				if (input.textContent.includes('x')) {
+					saveHistory(input.textContent, input.textContent);
+					img.expr = input.textContent;
+					output.textContent = '';
+				} else {
+					saveHistory(input.textContent + '=' + eval(input.textContent), eval(input.textContent));
+					output.textContent = eval(input.textContent).toPrecision(4);
+				}
+			};
+			break;
+		case "C":
+			k.onclick = () => {
+				inputHistory = [];
+				input.textContent = '';
+				output.textContent = '';
+			};
+			break;
+		case "erase":
+			k.onclick = () => {
+				if (inputHistory) {
+					input.textContent = inputHistory.pop();
+				}
+			};
+			break;
 		case 'left':
 		case 'right':
 		case 'up':
@@ -275,41 +177,7 @@ for (let k of btn) {
 		case 'scaley':
 		case 'suox':
 		case 'suoy':
-		k.onclick = () => {
-			if (k.id === 'left') {
-				img.domainLeft -= (img.domainRight - img.domainLeft) / 5;
-				img.domainRight -= (img.domainRight - img.domainLeft) / 5;
-			}
-			else if (k.id === 'right') {
-				img.domainLeft += (img.domainRight - img.domainLeft) / 5;
-				img.domainRight += (img.domainRight - img.domainLeft) / 5;
-			}
-			else if (k.id === 'down') {
-				img.codomainDown -= (img.codomainUp - img.codomainDown) / 5;
-				img.codomainUp -= (img.codomainUp - img.codomainDown) / 5;
-			}
-			else if (k.id === 'up') {
-				img.codomainDown += (img.codomainUp - img.codomainDown) / 5;
-				img.codomainUp += (img.codomainUp - img.codomainDown) / 5;
-			}
-			else if (k.id === 'scalex') {
-				img.domainLeft -= (img.domainRight - img.domainLeft) / 2;
-				img.domainRight += (img.domainRight - img.domainLeft) / 2;
-			}
-			else if (k.id === 'scaley') {
-				img.codomainDown -= (img.codomainUp - img.codomainDown) / 2;
-				img.codomainUp += (img.codomainUp - img.codomainDown) / 2;
-			}
-			else if (k.id === 'suox') {
-				img.domainLeft += (img.domainRight - img.domainLeft) / 2;
-				img.domainRight -= (img.domainRight - img.domainLeft) / 2;
-			}
-			else if (k.id === 'suoy') {
-				img.codomainDown += (img.codomainUp - img.codomainDown) / 2;
-				img.codomainUp -= (img.codomainUp - img.codomainDown) / 2;	
-			}
-			draw(ctx, img.expr);
-		}
-		
+			k.onclick = () => {}
+			break;
 	}
 }

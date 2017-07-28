@@ -1,12 +1,25 @@
 @import url("init.css");
 @import url("basic.css");
-
 #main {
-    grid-template-columns: repeat(11,1fr) 4fr;
+    grid-template-columns: repeat(11, 1fr) 4fr;
 }
+
 #screen {
     grid-column: 1/8;
 }
+
+#input {
+    height: 35%;
+    font-size: 2em;
+    margin: 5px;
+}
+
+#output {
+    height: 65%;
+    font-size: 4em;
+    padding: 10px;
+}
+
 #CE,
 #C,
 #erase,
@@ -50,7 +63,7 @@
     grid-row: 3/5;
 }
 
-#plusminus,
+#E,
 #num0,
 #point,
 #equal,
@@ -66,15 +79,14 @@
     grid-row: 5/7;
 }
 
-#CE,
+#C,
 #num7,
 #num4,
 #num1,
-#plusminus {
+#E {
     grid-column: 1;
 }
 
-#C,
 #num8,
 #num5,
 #num2,
@@ -82,7 +94,6 @@
     grid-column: 2;
 }
 
-#erase,
 #num9,
 #num6,
 #num3,
@@ -111,13 +122,18 @@
     grid-row: 2/7;
 }
 
-#canv {
-    grid-row: 1/3;
+#canvas-div {
+    grid-row: 1/5;
     grid-column: 8/12;
     margin: 10px;
     background-color: #ccc;
     border: 1px solid #bbb;
     box-shadow: 5px 5px 5px 0px #666;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
 }
 
 #divide,
@@ -128,28 +144,18 @@
     grid-column: 7;
 }
 
-#left,
-#up {
-    grid-column: 8;
+#erase {
+    grid-column: 2/4;
 }
 
-#right,
-#down {
-    grid-column: 9;
+#x-box {
+    grid-row: 5/7;
+    grid-column: 8/10;
 }
 
-#scalex,
-#scaley {
-    grid-column: 10;
-}
-
-#suox,
-#suoy {
-    grid-column: 11;
-}
-
-div.num {
-    background-color: #c8c8c8;
+#y-box {
+    grid-row: 5/7;
+    grid-column: 10/12;
 }
 
 #history {
