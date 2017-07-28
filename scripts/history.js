@@ -1,5 +1,6 @@
 var historyDiv = document.querySelector("#history");
 const maxHistory = 10;
+var historyIetm;
 
 function saveHistory(str, data) {
     var p = document.createElement('p');
@@ -8,7 +9,7 @@ function saveHistory(str, data) {
     p.onclick = retriveHistory;
     historyDiv.appendChild(p);
 
-    var his = localStorage.getItem('history');
+    var his = localStorage.getItem(historyIetm);
     if (!his) {
         his = {};
     } else {
@@ -19,14 +20,14 @@ function saveHistory(str, data) {
         historyDiv.removeChild(historyDiv.firstElementChild);
     }
     his[str] = data;
-    localStorage.setItem('history', JSON.stringify(his));
+    localStorage.setItem(historyIetm, JSON.stringify(his));
 }
 
 function initHistory() {
-    var his = localStorage.getItem('history');
+    var his = localStorage.getItem(historyIetm);
     if (his) {
         his = JSON.parse(his);
-        localStorage.removeItem('history');
+        localStorage.removeItem(historyIetm);
     } else {
         return;
     }

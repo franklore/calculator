@@ -93,6 +93,7 @@ var inputHistory = [''];
 function retriveHistory() {
 	input.textContent += this.dataset.ans;
 }
+historyIetm = 'advanced_history';
 initHistory();
 
 for (let k of btn) {

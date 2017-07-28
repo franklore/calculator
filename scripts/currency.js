@@ -23,6 +23,7 @@ function updateData() {
         }
     });
 }
+setInterval(updateData, 9E5);
 
 function retrieveData() {
     var data = localStorage.getItem('data');
