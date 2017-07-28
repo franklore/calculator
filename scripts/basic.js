@@ -1,50 +1,14 @@
 var btn = document.querySelectorAll("button");
 var past = document.querySelector("#past-input");
 var current = document.querySelector("#current-input");
-var sta = {
-dotted: false,
-minus: false,
-equaled: false,
-functioned: false,
-brBalance: 0,
-clear: function() {
-	this.dotted = false;
-	this.minus = false;
-	this.equaled = false;
-	this.brBalance = 0;
-	this.functioned = false;
-}
-};
 
 var operator = {
-	divide: '/',
-	multiply: '*',
-	plus: '+',
-	minus: '-',
-	pow: '**',
+    divide: '/',
+    multiply: '*',
+    plus: '+',
+    minus: '-',
+    pow: '**',
 }
-
-sin = Math.sin;
-cos = Math.cos;
-tan = Math.tan;
-pow = Math.pow;
-exp = Math.exp;
-log = Math.log;
-sqrt = Math.sqrt;
-sq = (x) => x*x;
-fact = function(x) {
-	if (Math.floor(x) !== x)
-		return 0;
-	if (x < 0)
-		return 0;
-	let s = 1;
-	for (let i = 1; i <= x; i++) {
-		s *= i;
-	}
-	return s;
-}
-
-
 
 var historyDiv = document.querySelector("#history");
 const maxHistory = 10;
@@ -53,7 +17,10 @@ function retriveHistory() {
     current.textContent = this.dataset.ans;
 }
 
+var pastHistory = [];
+
 function currentToPast() {
+    pastHistory.push(past.textContent);
     if (current.textContent[0] === "-") {
         past.textContent += "(" + current.textContent + ")";
     } else {
@@ -97,27 +64,12 @@ for (let k of btn) {
             };
             break;
         case "divide":
-            k.onclick = () => {
-                currentToPast();
-                past.textContent += "/";
-            };
-            break;
         case "multiply":
-            k.onclick = () => {
-                currentToPast();
-                past.textContent += "*";
-            };
-            break;
         case "minus":
-            k.onclick = () => {
-                currentToPast();
-                past.textContent += "-";
-            };
-            break;
         case "plus":
             k.onclick = () => {
                 currentToPast();
-                past.textContent += "+";
+                past.textContent += operator[k.id];
             };
             break;
         case "equal":
@@ -142,17 +94,15 @@ for (let k of btn) {
             break;
         case "C":
             k.onclick = () => {
+                pastHistory = [];
                 past.textContent = "";
                 current.textContent = 0;
             };
             break;
         case "erase":
             k.onclick = () => {
-                if (current.textContent === "0" && past.textContent.length >= 1) {
-                    past.textContent = past.textContent.substr(
-                        0,
-                        past.textContent.length - 1
-                    );
+                if (current.textContent === "0" && pastHistory.length >= 1) {
+                    past.textContent = pastHistory.pop();
                 } else if (current.textContent.length === 1) {
                     current.textContent = 0;
                 } else {
