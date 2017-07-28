@@ -126,3 +126,6 @@
     padding: 10px;
     cursor: default;
 }
+#history p#title:hover{
+    background-color: #ccc;
+}
