@@ -45,6 +45,15 @@ fact = function (x) {
 }
 
 function drawFunction() {
+	ctx.strokeStyle = 'black';
+	ctx.beginPath();
+	ctx.moveTo(minX.value, 0);
+	ctx.lineTo(maxX.value, 0);
+	ctx.moveTo(0, maxY.value);
+	ctx.lineTo(0, minY.value);
+	ctx.stroke();
+	ctx.closePath();
+
 	if (!imgExpr) {
 		return;
 	}
@@ -65,16 +74,6 @@ function redraw() {
 	ctx.clearRect(0, 0, width, height);
 	ctx.save();
 	ctx.scale(1, -1);
-
-	ctx.strokeStyle = 'black';
-	ctx.beginPath();
-	ctx.moveTo(0, -maxY.value * height / (maxY.value - minY.value));
-	ctx.lineTo(width, -maxY.value * height / (maxY.value - minY.value));
-	ctx.moveTo(-minX.value * width / (maxX.value - minX.value), 0);
-	ctx.lineTo(-minX.value * width / (maxX.value - minX.value), -height);
-	ctx.stroke();
-	ctx.closePath();
-
 	ctx.scale(width / (maxX.value - minX.value), height / (maxY.value - minY.value));
 	ctx.translate(-minX.value, -maxY.value);
 
