@@ -60,11 +60,15 @@ function drawFunction() {
 	var f = (x) => eval(imgExpr);
 	ctx.strokeStyle = 'grey';
 	ctx.beginPath();
-	ctx.moveTo(minX.value, f(minX.value));
-	for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / 1000) {
-		ctx.lineTo(x, f(x));
+	try {
+		ctx.moveTo(minX.value, f(minX.value));
+		for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / 1000) {
+			ctx.lineTo(x, f(x));
+		}
+		ctx.stroke();
+	} catch (error) {
+
 	}
-	ctx.stroke();
 }
 
 function redraw() {
