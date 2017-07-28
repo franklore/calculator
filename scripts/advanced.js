@@ -149,8 +149,17 @@ for (let k of btn) {
 					imgExpr = input.textContent;
 					output.textContent = '';
 				} else {
-					saveHistory(input.textContent + '=' + eval(input.textContent), eval(input.textContent));
-					output.textContent = eval(input.textContent).toPrecision(4);
+					try {
+						let evalout = eval(input.textContent);
+						if (!isFinite(output)) {
+							throw output;
+						}
+						saveHistory(input.textContent + '=' + evalout, evalout);
+						output.textContent = evalout.toPrecision(4);
+					} catch (error) {
+						alert('Error');
+						input.textContent = '';
+					}
 				}
 			};
 			break;

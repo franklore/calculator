@@ -73,9 +73,18 @@ for (let k of btn) {
             break;
         case "equal":
             k.onclick = () => {
-                currentToPast();
-                saveHistory(past.textContent + '=' + eval(past.textContent), eval(past.textContent));
-                past.textContent = eval(past.textContent);
+                try {
+                    currentToPast();
+                    let output = eval(past.textContent);
+                    if (!isFinite(output)) {
+                        throw output;
+                    }
+                    saveHistory(past.textContent + '=' + output, output);
+                    past.textContent = output;
+                } catch (e) {
+                    alert('Error');
+                    past.textContent = '';
+                }
                 current.textContent = 0;
             };
             break;
