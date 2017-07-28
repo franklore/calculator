@@ -12,7 +12,7 @@ clear: function() {
 	this.minus = false;
 	this.equaled = false;
 	this.brBalance = 0;
-	this.functioned = false;
+	this.functioned = false;	
 }
 };
 
