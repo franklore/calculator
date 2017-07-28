@@ -50,10 +50,10 @@ fact = function (x) {
 function drawFunction() {
 	ctx.strokeStyle = 'black';
 	ctx.beginPath();
-	ctx.moveTo(-width / 2, 0);
-	ctx.lineTo(width / 2, 0);
-	ctx.moveTo(0, height / 2);
-	ctx.lineTo(0, -height / 2);
+	ctx.moveTo(minX.value, 0);
+	ctx.lineTo(maxX.value, 0);
+	ctx.moveTo(0, maxY.value);
+	ctx.lineTo(0, minY.value);
 	ctx.stroke();
 	ctx.closePath();
 
@@ -64,7 +64,7 @@ function drawFunction() {
 	ctx.strokeStyle = 'grey';
 	ctx.beginPath();
 	ctx.moveTo(minX.value, f(minX.value));
-	for (let x = Number(minX.value); x < maxY.value; x += (maxX.value - minX.value) / img.dotNumber) {
+	for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / img.dotNumber) {
 		ctx.lineTo(x, f(x));
 	}
 	ctx.stroke();
