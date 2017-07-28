@@ -151,8 +151,8 @@ for (let k of btn) {
 				} else {
 					try {
 						let evalout = eval(input.textContent);
-						if (!isFinite(output)) {
-							throw output;
+						if (!isFinite(evalout)) {
+							throw evalout;
 						}
 						saveHistory(input.textContent + '=' + evalout, evalout);
 						output.textContent = evalout.toPrecision(4);
