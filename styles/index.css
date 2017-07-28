@@ -73,3 +73,16 @@ iframe {
     overflow: hidden;
     border: 0;
 }
+
+#frameTitle {
+    font-size:1.8em;
+    padding-left: 10px;
+    height: 45px;
+    line-height: 45px;
+    background-color: #c8c8c8;
+}
+
+#frameTitle:hover {
+    background-color: #ccc;
+    transition: background-color 0.2s;
+}
