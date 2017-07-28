@@ -17,7 +17,7 @@ function saveHistory(str, data) {
         his = JSON.parse(his);
     }
     if (historyDiv.childElementCount > maxHistory + 1) {
-        let first = document.querySelectorAll('#history p')[0];
+        let first = document.querySelectorAll('#history>p')[0];
         delete his[first.textContent];
         historyDiv.removeChild(first);
     }
@@ -39,7 +39,7 @@ function initHistory() {
 }
 
 deleteBtn.onclick = () => {
-    let first = document.querySelectorAll('#history p');
+    let first = document.querySelectorAll('#history>p');
     if (first.length >= 1) {
         first = first[0];
         var his = localStorage.getItem(historyIetm);
