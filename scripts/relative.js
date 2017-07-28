@@ -3,6 +3,11 @@ var output = document.querySelector('#output');
 var btns = document.querySelectorAll('button');
 var gender = document.querySelector('#gender');
 
+function retriveHistory() {}
+historyIetm = 'relative_history';
+initHistory();
+
+
 var data = {
     '祖父': {
         father: '曾祖父',
@@ -355,6 +360,7 @@ btns.forEach((element) => {
         case 'equal':
             element.onclick = () => {
                 output.textContent = current;
+                saveHistory(current, '')
                 input.textContent = '我';
                 inputHistory = [];
                 current = '我';
