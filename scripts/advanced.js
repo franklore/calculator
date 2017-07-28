@@ -5,9 +5,11 @@ var output = document.querySelector("#output");
 var canvasDiv = document.querySelector('#canvas-div');
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d');
-const drawMin = 2000;
+var minX = document.querySelector('#minX'),
+	maxX = document.querySelector('#maxX'),
+	minY = document.querySelector('#minY'),
+	maxY = document.querySelector('#maxY');
 var width, height;
-var drawMax, drawX, drawY;
 
 var operator = {
 	divide: '/',
@@ -21,9 +23,7 @@ var operator = {
 }
 
 var img = {
-	translateX: 0,
-	translateY: 0,
-	dotNumber: 5000,
+	dotNumber: 1000,
 	expr: '',
 }
 
@@ -50,10 +50,10 @@ fact = function (x) {
 function drawFunction() {
 	ctx.strokeStyle = 'black';
 	ctx.beginPath();
-	ctx.moveTo(-drawX / 2, 0);
-	ctx.lineTo(drawX / 2, 0);
-	ctx.moveTo(0, drawY / 2);
-	ctx.lineTo(0, -drawY / 2);
+	ctx.moveTo(-width / 2, 0);
+	ctx.lineTo(width / 2, 0);
+	ctx.moveTo(0, height / 2);
+	ctx.lineTo(0, -height / 2);
 	ctx.stroke();
 	ctx.closePath();
 
@@ -63,52 +63,24 @@ function drawFunction() {
 	var f = (x) => eval(img.expr);
 	ctx.strokeStyle = 'grey';
 	ctx.beginPath();
-	ctx.moveTo(-drawX / 2, f(-drawX / 2));
-	for (let x = -drawX / 2; x < drawX / 2; x += drawX / img.dotNumber) {
+	ctx.moveTo(minX.value, f(minX.value));
+	for (let x = Number(minX.value); x < maxY.value; x += (maxX.value - minX.value) / img.dotNumber) {
 		ctx.lineTo(x, f(x));
 	}
 	ctx.stroke();
 }
 
-
-var tracking, startX, startY, endX, endY;
-canvas.onmousedown = (e) => {
-	tracking = true;
-	startX = e.clientX;
-	startY = e.clientY;
-};
-canvas.onmousemove = (e) => {
-	if (tracking) {
-		endX = e.clientX;
-		endY = e.clientY;
-	}
-};
-canvas.onmouseup = (e) => {
-	img.translateX += endX - startX;
-	img.translateY += endY - startY;
-	tracking = false;
-};
-
 function redraw() {
-	width = canvas.width = canvasDiv.clientWidth;
-	height = canvas.height = canvasDiv.clientHeight;
-	if (width >= height) {
-		drawMax = drawMin * width / height;
-		drawX = drawMax;
-		drawY = drawMin;
-	} else {
-		drawMax = drawMin * height / width;
-		drawX = drawMin;
-		drawY = drawMax;
-	}
+	width = canvas.width;
+	height = canvas.height;
 
 	ctx.clearRect(0, 0, width, height);
 	ctx.save();
-	ctx.translate(img.translateX, img.translateY);
-	ctx.translate(width / 2, height / 2);
-	// ctx.scale(Math.min(width, height) / drawMin, -Math.min(width, height) / drawMin);
 	ctx.scale(1, -1);
+	ctx.scale(width / (maxX.value - minX.value), height / (maxY.value - minY.value));
+	ctx.translate(-minX.value, -maxY.value);
 
+	ctx.lineWidth = 1 / Math.max(width / (maxX.value - minX.value), height / (maxY.value - minY.value))
 	drawFunction()
 
 	ctx.restore();
@@ -117,6 +89,10 @@ function redraw() {
 redraw();
 
 var inputHistory = [''];
+
+function retriveHistory() {
+	input.textContent += this.dataset.ans;
+}
 
 for (let k of btn) {
 	switch (k.id) {
@@ -170,8 +146,11 @@ for (let k of btn) {
 		case "equal":
 			k.onclick = () => {
 				if (input.textContent.includes('x')) {
+					saveHistory(input.textContent, input.textContent);
 					img.expr = input.textContent;
+					output.textContent = '';
 				} else {
+					saveHistory(input.textContent + '=' + eval(input.textContent), eval(input.textContent));
 					output.textContent = eval(input.textContent).toPrecision(4);
 				}
 			};

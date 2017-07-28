@@ -10,9 +10,6 @@ var operator = {
     pow: '**',
 }
 
-var historyDiv = document.querySelector("#history");
-const maxHistory = 10;
-
 function retriveHistory() {
     current.textContent = this.dataset.ans;
 }
@@ -75,14 +72,7 @@ for (let k of btn) {
         case "equal":
             k.onclick = () => {
                 currentToPast();
-                var p = document.createElement('p');
-                p.textContent = past.textContent + '=' + eval(past.textContent);
-                p.dataset.ans = eval(past.textContent);
-                p.onclick = retriveHistory;
-                historyDiv.appendChild(p);
-                if (historyDiv.childElementCount > maxHistory) {
-                    historyDiv.removeChild(historyDiv.firstElementChild);
-                }
+                saveHistory(past.textContent + '=' + eval(past.textContent), eval(past.textContent));
                 past.textContent = eval(past.textContent);
                 current.textContent = 0;
             };

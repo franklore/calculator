@@ -3,26 +3,31 @@
     padding: 0 1em;
     height: 100%;
     min-height: 30em;
-    max-width: 50em;
     background-color: #e8e8e8;
     display: grid;
-    grid-template-rows: 35% 13% 13% 13% 13% 13%;
+    grid-template-rows: 35% repeat(5,1fr);
+    grid-template-columns: repeat(4,1fr) 2fr;
 }
 
 #screen {
+    margin: 10px;
+    border: 1px double #bbb;
+    background-color: #ddd;
     grid-row: 1;
     grid-column: 1/5;
     text-align: right;
 }
 
 #past-input {
+    padding: 0px 10px;
     height: 35%;
-    font-size: 300%;
+    font-size: 200%;
 }
 
 #current-input {
+    padding: 0px 10px;
     height: 65%;
-    font-size: 600%;
+    font-size: 500%;
 }
 
 #CE,
@@ -93,6 +98,31 @@
 }
 
 #history {
+    background-color: #ccc;
+    margin: 10px;
     grid-row: 1/7;
     grid-column: 5;
+    font-size: 1.2em;
+    border: 1px solid #bbb;
+    box-shadow: 5px 5px 5px 0px #666;
+}
+
+#history p {
+    margin: 5px;
+    padding-left: 5px;
+    height: 2em;
+    line-height: 2em;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+#history p:hover {
+    background-color: purple;
+    transition: background-color 0.2s;
+}
+
+#history p#title {
+    margin: 0;
+    padding: 10px;
+    cursor: default;
 }
