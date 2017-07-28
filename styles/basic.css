@@ -107,8 +107,8 @@
     box-shadow: 5px 5px 5px 0px #666;
 }
 
-#history p {
-    margin: 5px;
+#history>p {
+    margin: 0 5px;
     padding-left: 5px;
     height: 2em;
     line-height: 2em;
@@ -116,13 +116,34 @@
     cursor: pointer;
 }
 
-#history p:hover {
+#history>p:hover {
     background-color: purple;
     transition: background-color 0.2s;
 }
 
-#history p#title {
-    margin: 0;
-    padding: 10px;
-    cursor: default;
+#histitle {
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    grid-template-rows: 2em;
+}
+
+#histitle #title {
+    grid-column: 1;
+    font-size: 1.4em;
+    margin: 0px 10px;
+}
+
+#histitle button#delete {
+    grid-column: 2;
+    min-height: 0;
+    min-width: 0;   
+    line-height: 0.5em;
+    overflow: hidden;
+    color: #666;
+    background-color: #ccc;
+}
+
+#histitle button#delete:hover {
+    background-color: purple;
+    transition: background-color 0.2s;
 }

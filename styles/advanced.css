@@ -149,13 +149,29 @@ canvas {
 }
 
 #x-box {
+    margin: 10px;
     grid-row: 5/7;
     grid-column: 8/10;
 }
 
 #y-box {
+    margin: 10px;
     grid-row: 5/7;
     grid-column: 10/12;
+}
+
+input {
+    width: 100%;
+    font-size: 1.5em;
+    height: 1.5em;
+    margin: 5px 0;
+    background: #d8d8d8;
+    border: 1px solid #bbb;
+}
+
+input:focus {
+    box-shadow: 0px 0px 10px 0px purple;
+    transition: box-shadow 0.2s;
 }
 
 #history {
