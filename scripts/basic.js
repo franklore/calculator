@@ -13,6 +13,7 @@ var operator = {
 function retriveHistory() {
     current.textContent = this.dataset.ans;
 }
+initHistory();
 
 var pastHistory = [];
 

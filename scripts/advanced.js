@@ -93,6 +93,7 @@ var inputHistory = [''];
 function retriveHistory() {
 	input.textContent += this.dataset.ans;
 }
+initHistory();
 
 for (let k of btn) {
 	switch (k.id) {
