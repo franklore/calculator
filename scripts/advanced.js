@@ -22,10 +22,7 @@ var operator = {
 	point: '.',
 }
 
-var img = {
-	dotNumber: 1000,
-	expr: '',
-}
+var imgExpr = '';
 
 sin = Math.sin;
 cos = Math.cos;
@@ -48,35 +45,36 @@ fact = function (x) {
 }
 
 function drawFunction() {
-	ctx.strokeStyle = 'black';
-	ctx.beginPath();
-	ctx.moveTo(minX.value, 0);
-	ctx.lineTo(maxX.value, 0);
-	ctx.moveTo(0, maxY.value);
-	ctx.lineTo(0, minY.value);
-	ctx.stroke();
-	ctx.closePath();
-
-	if (!img.expr) {
+	if (!imgExpr) {
 		return;
 	}
-	var f = (x) => eval(img.expr);
+	var f = (x) => eval(imgExpr);
 	ctx.strokeStyle = 'grey';
 	ctx.beginPath();
 	ctx.moveTo(minX.value, f(minX.value));
-	for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / img.dotNumber) {
+	for (let x = Number(minX.value); x < maxX.value; x += (maxX.value - minX.value) / 1000) {
 		ctx.lineTo(x, f(x));
 	}
 	ctx.stroke();
 }
 
 function redraw() {
-	width = canvas.width;
-	height = canvas.height;
+	width = canvas.width = canvasDiv.clientWidth;
+	height = canvas.height = canvasDiv.clientHeight;
 
 	ctx.clearRect(0, 0, width, height);
 	ctx.save();
 	ctx.scale(1, -1);
+
+	ctx.strokeStyle = 'black';
+	ctx.beginPath();
+	ctx.moveTo(0, -maxY.value * height / (maxY.value - minY.value));
+	ctx.lineTo(width, -maxY.value * height / (maxY.value - minY.value));
+	ctx.moveTo(-minX.value * width / (maxX.value - minX.value), 0);
+	ctx.lineTo(-minX.value * width / (maxX.value - minX.value), -height);
+	ctx.stroke();
+	ctx.closePath();
+
 	ctx.scale(width / (maxX.value - minX.value), height / (maxY.value - minY.value));
 	ctx.translate(-minX.value, -maxY.value);
 
@@ -149,7 +147,7 @@ for (let k of btn) {
 			k.onclick = () => {
 				if (input.textContent.includes('x')) {
 					saveHistory(input.textContent, input.textContent);
-					img.expr = input.textContent;
+					imgExpr = input.textContent;
 					output.textContent = '';
 				} else {
 					saveHistory(input.textContent + '=' + eval(input.textContent), eval(input.textContent));
